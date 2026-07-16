@@ -13,6 +13,11 @@
   --accent-hover: #5a4bd4;
   --accent-soft: #eee9ff;
   --accent-soft-hover: #e2dbff;
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.2s ease;
+  --transition-theme: 0.25s ease;
+  --transition-lift: 0.18s ease;
+  --transition-entrance: 0.4s ease;
 }
 
 :root[data-theme="dark"] {
@@ -55,13 +60,17 @@ body {
   color: var(--ink);
   font-family: var(--font-outfit), sans-serif;
   transition:
-    background-color 0.25s ease,
-    color 0.25s ease;
+    background-color var(--transition-theme),
+    color var(--transition-theme);
+}
+
+button {
+  font-family: inherit;
 }
 
 a {
   color: var(--accent);
-  transition: opacity 0.2s ease;
+  transition: opacity var(--transition-base);
 }
 
 a:hover {
@@ -69,16 +78,15 @@ a:hover {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    /* biome-ignore lint/complexity/noImportantStyles: must outrank per-component transition/animation durations declared elsewhere */
-    animation-duration: 0.01ms !important;
-    /* biome-ignore lint/complexity/noImportantStyles: must outrank per-component transition/animation durations declared elsewhere */
-    animation-iteration-count: 1 !important;
-    /* biome-ignore lint/complexity/noImportantStyles: must outrank per-component transition/animation durations declared elsewhere */
-    transition-duration: 0.01ms !important;
-    /* biome-ignore lint/complexity/noImportantStyles: must outrank per-component transition/animation durations declared elsewhere */
-    scroll-behavior: auto !important;
+  :root {
+    --transition-fast: 0.01ms;
+    --transition-base: 0.01ms;
+    --transition-theme: 0.01ms;
+    --transition-lift: 0.01ms;
+    --transition-entrance: 0.01ms;
+  }
+
+  html {
+    scroll-behavior: auto;
   }
 }

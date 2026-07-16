@@ -1,8 +1,10 @@
 "use client";
 
 import Image from "next/image";
+import type { CSSProperties } from "react";
 import { useEffect, useState } from "react";
 import styles from "./page.module.css";
+import { THEME_STORAGE_KEY } from "./theme";
 
 type ProjectStatus = "live" | "soon";
 
@@ -16,7 +18,6 @@ interface Project {
 
 interface Palette {
   bg: string;
-  s1: string;
   s2: string;
   fg: string;
   mid: string;
@@ -92,7 +93,6 @@ const PROJECTS: Project[] = [
 const PALETTES_LIGHT: Palette[] = [
   {
     bg: "#fff3e4",
-    s1: "#ffe8cd",
     s2: "#ffe1bd",
     fg: "#8a5a1f",
     mid: "#a37e4d",
@@ -100,7 +100,6 @@ const PALETTES_LIGHT: Palette[] = [
   },
   {
     bg: "#e4f4ec",
-    s1: "#d2ecdf",
     s2: "#c7e6d6",
     fg: "#1f6b45",
     mid: "#4d8a6b",
@@ -108,7 +107,6 @@ const PALETTES_LIGHT: Palette[] = [
   },
   {
     bg: "#e9e6ff",
-    s1: "#dcd7fb",
     s2: "#d2ccf8",
     fg: "#463aa0",
     mid: "#6c62b8",
@@ -116,7 +114,6 @@ const PALETTES_LIGHT: Palette[] = [
   },
   {
     bg: "#ffe9f0",
-    s1: "#fcdbe7",
     s2: "#f9d0df",
     fg: "#96345c",
     mid: "#b25e80",
@@ -124,7 +121,6 @@ const PALETTES_LIGHT: Palette[] = [
   },
   {
     bg: "#e3f1fd",
-    s1: "#d2e7f9",
     s2: "#c6dff5",
     fg: "#1e5f96",
     mid: "#4a82ac",
@@ -132,7 +128,6 @@ const PALETTES_LIGHT: Palette[] = [
   },
   {
     bg: "#fdf4d7",
-    s1: "#f8ecc2",
     s2: "#f4e5b0",
     fg: "#8a6d1f",
     mid: "#a68f4d",
@@ -143,7 +138,6 @@ const PALETTES_LIGHT: Palette[] = [
 const PALETTES_DARK: Palette[] = [
   {
     bg: "#33261a",
-    s1: "#3c2d1f",
     s2: "#453424",
     fg: "#f4c690",
     mid: "#c9a06a",
@@ -151,7 +145,6 @@ const PALETTES_DARK: Palette[] = [
   },
   {
     bg: "#1a2e24",
-    s1: "#21382c",
     s2: "#274134",
     fg: "#9fdcbb",
     mid: "#6faf8d",
@@ -159,7 +152,6 @@ const PALETTES_DARK: Palette[] = [
   },
   {
     bg: "#242038",
-    s1: "#2b2645",
     s2: "#322c50",
     fg: "#c3b8fa",
     mid: "#948ad0",
@@ -167,7 +159,6 @@ const PALETTES_DARK: Palette[] = [
   },
   {
     bg: "#331e27",
-    s1: "#3d2530",
     s2: "#472b38",
     fg: "#f2a8c5",
     mid: "#c47d9c",
@@ -175,7 +166,6 @@ const PALETTES_DARK: Palette[] = [
   },
   {
     bg: "#1a2735",
-    s1: "#202f40",
     s2: "#26374a",
     fg: "#a3cdf0",
     mid: "#74a3c9",
@@ -183,7 +173,6 @@ const PALETTES_DARK: Palette[] = [
   },
   {
     bg: "#2f2917",
-    s1: "#38311d",
     s2: "#423922",
     fg: "#e8d089",
     mid: "#b8a25e",
@@ -193,7 +182,6 @@ const PALETTES_DARK: Palette[] = [
 
 const INITIAL_COUNT = 6;
 const BATCH = 3;
-const SHOW_COMING_SOON = true;
 const FILTERS = ["All", "iOS", "Android", "Web"] as const;
 type PlatformFilter = (typeof FILTERS)[number];
 
@@ -208,13 +196,10 @@ export default function Home() {
   const [filter, setFilter] = useState<PlatformFilter>("All");
 
   useEffect(() => {
-    let stored: string | null = null;
-    try {
-      stored = localStorage.getItem("avora-theme");
-    } catch {
-      // localStorage unavailable (private browsing, etc.) — fall back to light
+    // The layout's inline script already stamped this before hydration.
+    if (document.documentElement.getAttribute("data-theme") === "dark") {
+      setTheme("dark");
     }
-    if (stored === "dark") setTheme("dark");
 
     const onScroll = () => {
       setShowTopBtn(
@@ -229,7 +214,7 @@ export default function Home() {
     const next = theme === "dark" ? "light" : "dark";
     document.documentElement.setAttribute("data-theme", next);
     try {
-      localStorage.setItem("avora-theme", next);
+      localStorage.setItem(THEME_STORAGE_KEY, next);
     } catch {
       // localStorage unavailable — theme still applies for this session
     }
@@ -245,9 +230,9 @@ export default function Home() {
 
   const isDark = theme === "dark";
   const palettes = isDark ? PALETTES_DARK : PALETTES_LIGHT;
-  const allProjects = (
-    SHOW_COMING_SOON ? PROJECTS : PROJECTS.filter((p) => p.status !== "soon")
-  ).filter((p) => filter === "All" || p.platforms.includes(filter));
+  const allProjects = PROJECTS.filter(
+    (p) => filter === "All" || p.platforms.includes(filter),
+  );
   const visibleCount = Math.min(INITIAL_COUNT + extra, allProjects.length);
   const shown = allProjects.slice(0, visibleCount);
   const remaining = allProjects.length - visibleCount;
@@ -256,7 +241,7 @@ export default function Home() {
 
   return (
     <>
-      <nav className={styles.nav}>
+      <nav className={`${styles.container} ${styles.nav}`}>
         <div className={styles.logo} role="img" aria-label="avora labs">
           <span className={styles.logoStrong}>av</span>
           <span className={styles.logoDot} />
@@ -283,14 +268,14 @@ export default function Home() {
           </button>
           <a
             href="mailto:personal.renoangelo@gmail.com"
-            className={styles.hiBtn}
+            className={`${styles.pillBtn} ${styles.hiBtn}`}
           >
             Say hi 👋
           </a>
         </div>
       </nav>
 
-      <header className={styles.hero}>
+      <header className={`${styles.container} ${styles.hero}`}>
         <span className={styles.badge}>Made by one friendly engineer</span>
         <h1 className={styles.heroTitle}>
           Little apps and tools that make big differences
@@ -301,7 +286,10 @@ export default function Home() {
         </p>
       </header>
 
-      <section id="apps" className={styles.appsSection}>
+      <section
+        id="apps"
+        className={`${styles.container} ${styles.appsSection}`}
+      >
         <div className={styles.sectionHead}>
           <h2 className={styles.sectionTitle}>From the lab</h2>
           <span className={styles.countLabel}>
@@ -347,7 +335,7 @@ export default function Home() {
       </section>
 
       <section id="about" className={styles.about}>
-        <div className={styles.aboutInner}>
+        <div className={`${styles.container} ${styles.aboutInner}`}>
           <div>
             <h2 className={styles.aboutHeading}>Nice to meet you 👋</h2>
             <p className={styles.aboutText}>
@@ -392,7 +380,7 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className={styles.footer}>
+      <footer className={`${styles.container} ${styles.footer}`}>
         <Image
           src="/images/avora-icon.png"
           alt=""
@@ -408,7 +396,7 @@ export default function Home() {
         </p>
         <a
           href="mailto:personal.renoangelo@gmail.com"
-          className={styles.footerBtn}
+          className={`${styles.pillBtn} ${styles.footerBtn}`}
         >
           personal.renoangelo@gmail.com
         </a>
@@ -445,9 +433,16 @@ function AppCard({
   slug: string;
   isDark: boolean;
 }) {
-  const chipBg = isDark ? palette.s2 : "#fff";
+  const cardVars = {
+    background: palette.bg,
+    "--card-fg": palette.fg,
+    "--card-mid": palette.mid,
+    "--card-ph": palette.ph,
+    "--card-chip-bg": isDark ? palette.s2 : "#fff",
+  } as CSSProperties;
+
   return (
-    <div className={styles.card} style={{ background: palette.bg }}>
+    <div className={styles.card} style={cardVars}>
       <div className={styles.cardImage}>
         <Image
           src={`/images/${slug}.png`}
@@ -458,23 +453,13 @@ function AppCard({
         />
       </div>
       <div className={styles.cardHeadRow}>
-        <h3 className={styles.cardTitle} style={{ color: palette.fg }}>
-          {project.name}
-        </h3>
-        <span className={styles.cardYear} style={{ color: palette.ph }}>
-          {project.year}
-        </span>
+        <h3 className={styles.cardTitle}>{project.name}</h3>
+        <span className={styles.cardYear}>{project.year}</span>
       </div>
-      <p className={styles.cardDesc} style={{ color: palette.mid }}>
-        {project.desc}
-      </p>
+      <p className={styles.cardDesc}>{project.desc}</p>
       <div className={styles.chipRow}>
         {project.platforms.map((platform) => (
-          <span
-            key={platform}
-            className={styles.chip}
-            style={{ background: chipBg, color: palette.fg }}
-          >
+          <span key={platform} className={styles.chip}>
             {platform}
           </span>
         ))}
@@ -482,8 +467,8 @@ function AppCard({
           <span
             className={styles.chip}
             style={{
-              background: palette.fg,
-              color: isDark ? "#14121c" : "#fff",
+              background: "var(--card-fg)",
+              color: isDark ? "var(--bg)" : "#fff",
             }}
           >
             Coming soon

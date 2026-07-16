@@ -1,3 +1,8 @@
+.container {
+  max-width: 1160px;
+  margin: 0 auto;
+}
+
 .nav {
   display: flex;
   flex-wrap: wrap;
@@ -5,8 +10,6 @@
   justify-content: space-between;
   gap: 14px 24px;
   padding: 24px clamp(20px, 5vw, 48px);
-  max-width: 1160px;
-  margin: 0 auto;
 }
 
 .logo {
@@ -47,7 +50,7 @@
 .navLink {
   text-decoration: none;
   color: var(--muted);
-  transition: color 0.2s ease;
+  transition: color var(--transition-base);
 }
 
 .themeToggle {
@@ -64,9 +67,9 @@
   justify-content: center;
   padding: 0;
   transition:
-    background-color 0.25s ease,
-    border-color 0.2s ease,
-    color 0.2s ease;
+    background-color var(--transition-theme),
+    border-color var(--transition-base),
+    color var(--transition-base);
 }
 
 .themeToggle:hover {
@@ -74,27 +77,28 @@
   color: var(--accent);
 }
 
-.hiBtn {
+.pillBtn {
   text-decoration: none;
   background: var(--accent);
   color: #fff;
-  padding: 10px 20px;
   border-radius: 999px;
   font-weight: 600;
   white-space: nowrap;
-  transition: background-color 0.2s ease;
+  transition: background-color var(--transition-base);
 }
 
-.hiBtn:hover {
+.pillBtn:hover {
   background: var(--accent-hover);
   opacity: 1;
+}
+
+.hiBtn {
+  padding: 10px 20px;
 }
 
 .hero {
   padding: clamp(44px, 7vw, 70px) clamp(20px, 5vw, 48px) 64px;
   text-align: center;
-  max-width: 1160px;
-  margin: 0 auto;
 }
 
 .badge {
@@ -128,8 +132,6 @@
 
 .appsSection {
   padding: 0 clamp(20px, 5vw, 48px) 32px;
-  max-width: 1160px;
-  margin: 0 auto;
 }
 
 .sectionHead {
@@ -162,7 +164,6 @@
 }
 
 .filterBtn {
-  font-family: var(--font-outfit), sans-serif;
   font-size: 13.5px;
   font-weight: 600;
   padding: 8px 16px;
@@ -172,9 +173,9 @@
   background: var(--surface);
   color: var(--muted);
   transition:
-    background-color 0.15s ease,
-    color 0.15s ease,
-    border-color 0.15s ease;
+    background-color var(--transition-fast),
+    color var(--transition-fast),
+    border-color var(--transition-fast);
 }
 
 .filterBtnActive {
@@ -193,9 +194,9 @@
   border-radius: 22px;
   padding: 26px;
   transition:
-    transform 0.18s ease,
-    background-color 0.25s ease;
-  animation: fadeInUp 0.4s ease both;
+    transform var(--transition-lift),
+    background-color var(--transition-theme);
+  animation: fadeInUp var(--transition-entrance) both;
 }
 
 .card:hover {
@@ -232,20 +233,23 @@
   margin: 0;
   font-size: 20px;
   font-weight: 700;
-  transition: color 0.25s ease;
+  color: var(--card-fg);
+  transition: color var(--transition-theme);
 }
 
 .cardYear {
   font-size: 12px;
   font-weight: 600;
-  transition: color 0.25s ease;
+  color: var(--card-ph);
+  transition: color var(--transition-theme);
 }
 
 .cardDesc {
   margin: 8px 0 16px;
   font-size: 14.5px;
   line-height: 1.55;
-  transition: color 0.25s ease;
+  color: var(--card-mid);
+  transition: color var(--transition-theme);
 }
 
 .chipRow {
@@ -259,9 +263,11 @@
   font-weight: 600;
   padding: 5px 12px;
   border-radius: 999px;
+  background: var(--card-chip-bg);
+  color: var(--card-fg);
   transition:
-    background-color 0.25s ease,
-    color 0.25s ease;
+    background-color var(--transition-theme),
+    color var(--transition-theme);
 }
 
 .loadMoreWrap {
@@ -271,7 +277,6 @@
 }
 
 .loadMoreBtn {
-  font-family: var(--font-outfit), sans-serif;
   font-size: 15px;
   font-weight: 600;
   color: var(--accent);
@@ -280,7 +285,7 @@
   padding: 14px 30px;
   border-radius: 999px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color var(--transition-base);
 }
 
 .loadMoreBtn:hover {
@@ -293,14 +298,12 @@
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
   transition:
-    background-color 0.25s ease,
-    border-color 0.25s ease;
+    background-color var(--transition-theme),
+    border-color var(--transition-theme);
 }
 
 .aboutInner {
   padding: 64px clamp(20px, 5vw, 48px);
-  max-width: 1160px;
-  margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
   gap: clamp(32px, 5vw, 56px);
@@ -341,8 +344,8 @@
   font-weight: 500;
   color: var(--chip-ink);
   transition:
-    background-color 0.25s ease,
-    color 0.25s ease;
+    background-color var(--transition-theme),
+    color var(--transition-theme);
 }
 
 .valueCards {
@@ -357,8 +360,8 @@
   border-radius: 16px;
   padding: 18px 20px;
   transition:
-    background-color 0.25s ease,
-    border-color 0.25s ease;
+    background-color var(--transition-theme),
+    border-color var(--transition-theme);
 }
 
 .valueCardTitle {
@@ -375,8 +378,6 @@
 .footer {
   padding: 72px clamp(20px, 5vw, 48px);
   text-align: center;
-  max-width: 1160px;
-  margin: 0 auto;
 }
 
 .footerIcon {
@@ -400,21 +401,9 @@
 
 .footerBtn {
   display: inline-block;
-  text-decoration: none;
-  background: var(--accent);
-  color: #fff;
   padding: 16px 34px;
-  border-radius: 999px;
   font-size: clamp(14px, 2.2vw, 17px);
-  font-weight: 600;
-  white-space: nowrap;
   max-width: 100%;
-  transition: background-color 0.2s ease;
-}
-
-.footerBtn:hover {
-  background: var(--accent-hover);
-  opacity: 1;
 }
 
 .footerBottom {
@@ -448,14 +437,13 @@
   cursor: pointer;
   box-shadow: 0 6px 18px rgba(108, 92, 231, 0.35);
   z-index: 50;
-  font-family: var(--font-outfit), sans-serif;
   opacity: 0;
   transform: translateY(12px) scale(0.9);
   pointer-events: none;
   transition:
-    background-color 0.15s ease,
-    transform 0.2s ease,
-    opacity 0.2s ease;
+    background-color var(--transition-fast),
+    transform var(--transition-base),
+    opacity var(--transition-base);
 }
 
 .topBtn:hover {

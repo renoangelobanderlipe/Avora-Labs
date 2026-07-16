@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
+import { THEME_STORAGE_KEY } from "./theme";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
 const THEME_INIT_SCRIPT = `
 (function () {
   try {
-    var theme = localStorage.getItem("avora-theme") || "light";
+    var theme = localStorage.getItem("${THEME_STORAGE_KEY}") || "light";
     document.documentElement.setAttribute("data-theme", theme);
   } catch (e) {}
 })();
