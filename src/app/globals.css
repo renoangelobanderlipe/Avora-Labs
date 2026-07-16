@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #fbfaff;
+  --surface: #ffffff;
+  --ink: #2b2640;
+  --muted: #6f6a85;
+  --faint: #9a95b0;
+  --line: #efedf7;
+  --chip: #f3f1fb;
+  --chip-ink: #554e77;
+  --accent: #6c5ce7;
+  --accent-hover: #5a4bd4;
+  --accent-soft: #eee9ff;
+  --accent-soft-hover: #e2dbff;
+}
+
+:root[data-theme="dark"] {
+  --bg: #14121c;
+  --surface: #1d1a28;
+  --ink: #eceaf5;
+  --muted: #a49fbd;
+  --faint: #7d7896;
+  --line: #2c2839;
+  --chip: #262234;
+  --chip-ink: #c5c0dd;
+  --accent: #8d7ff0;
+  --accent-hover: #a195f4;
+  --accent-soft: #2b2547;
+  --accent-soft-hover: #352d59;
+}
+
+@theme inline {
+  --color-background: var(--bg);
+  --color-foreground: var(--ink);
+  --font-sans: var(--font-outfit);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-outfit), sans-serif;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+
+a {
+  color: var(--accent);
+  transition: opacity 0.2s ease;
+}
+
+a:hover {
+  opacity: 0.85;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    /* biome-ignore lint/complexity/noImportantStyles: must outrank per-component transition/animation durations declared elsewhere */
+    animation-duration: 0.01ms !important;
+    /* biome-ignore lint/complexity/noImportantStyles: must outrank per-component transition/animation durations declared elsewhere */
+    animation-iteration-count: 1 !important;
+    /* biome-ignore lint/complexity/noImportantStyles: must outrank per-component transition/animation durations declared elsewhere */
+    transition-duration: 0.01ms !important;
+    /* biome-ignore lint/complexity/noImportantStyles: must outrank per-component transition/animation durations declared elsewhere */
+    scroll-behavior: auto !important;
+  }
+}
