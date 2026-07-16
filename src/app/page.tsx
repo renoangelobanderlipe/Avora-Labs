@@ -234,7 +234,6 @@ export default function Home() {
     (p) => filter === "All" || p.platforms.includes(filter),
   );
   const visibleCount = Math.min(INITIAL_COUNT + extra, allProjects.length);
-  const shown = allProjects.slice(0, visibleCount);
   const remaining = allProjects.length - visibleCount;
   const hasMore = remaining > 0;
   const nextBatch = Math.min(BATCH, remaining);
@@ -311,13 +310,14 @@ export default function Home() {
           ))}
         </div>
         <div className={styles.grid}>
-          {shown.map((project, i) => (
+          {allProjects.map((project, i) => (
             <AppCard
               key={project.name}
               project={project}
               palette={palettes[i % palettes.length]}
               slug={slugify(project.name)}
               isDark={isDark}
+              hidden={i >= visibleCount}
             />
           ))}
         </div>
@@ -427,11 +427,13 @@ function AppCard({
   palette,
   slug,
   isDark,
+  hidden,
 }: {
   project: Project;
   palette: Palette;
   slug: string;
   isDark: boolean;
+  hidden: boolean;
 }) {
   const cardVars = {
     background: palette.bg,
@@ -442,7 +444,7 @@ function AppCard({
   } as CSSProperties;
 
   return (
-    <div className={styles.card} style={cardVars}>
+    <div className={styles.card} style={cardVars} hidden={hidden}>
       <div className={styles.cardImage}>
         <Image
           src={`/images/${slug}.png`}
